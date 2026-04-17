@@ -20,14 +20,14 @@ public static class PandorasBoxExports
     [ModExportName("PandorasBox.DreamDashController")]
     public static class DreamDashControllerExports
     {
-        public static void AddSetupIgnoringTypes(List<Type> types)
+        public static void AddSetupIgnoringTypes(HashSet<Type> types)
             => DreamDashController.AddSetupIgnoringTypes(types);
-        public static void RemoveSetupIgnoringTypes(List<Type> types)
+        public static void RemoveSetupIgnoringTypes(HashSet<Type> types)
             => DreamDashController.RemoveSetupIgnoringTypes(types);
         
-        public static void AddControlledTypes(List<Type> types)
+        public static void AddControlledTypes(HashSet<Type> types)
             => DreamDashController.AddControlledTypes(types);
-        public static void RemoveControlledTypes(List<Type> types)
+        public static void RemoveControlledTypes(HashSet<Type> types)
             => DreamDashController.RemoveControlledTypes(types);
 
         public static void GetGameplaySettingsFor(Entity entity,
@@ -70,54 +70,25 @@ public static class PandorasBoxExports
             out Color? disabledBackColor,
             out Color? activeLineColor,
             out Color? disabledLineColor,
-            out Color[] activeParticleLayerColors,
-            out int[] activeParticleLayerIndices,
-            out Color[] disabledParticleLayerColors,
-            out int[] disabledParticleLayerIndices)
+            out Color[][] activeParticleLayerColors,
+            out Color[][] disabledParticleLayerColors)
         {
             activeBackColor = null;
             disabledBackColor = null;
             activeLineColor = null;
             disabledLineColor = null;
             activeParticleLayerColors = null;
-            activeParticleLayerIndices = null;
             disabledParticleLayerColors = null;
-            disabledParticleLayerIndices = null;
 
             if (entity.Get<DreamDashController.DreamDashControllerComponent>()?.Controller is not { OverrideColors: true } controller)
                 return;
-            
-            Logger.Info(PandorasBoxModule.LoggerTag, $"active particle layer colors: {string.Join(";", controller.ActiveParticleLayerColors.Select(colorList => string.Join(",", colorList)))}");
-            Logger.Info(PandorasBoxModule.LoggerTag, $"disabled particle layer colors: {string.Join(";", controller.DisabledParticleLayerColors.Select(colorList => string.Join(",", colorList)))}");
-            
+
             activeBackColor = controller.ActiveBackColor;
             disabledBackColor = controller.DisabledBackColor;
             activeLineColor = controller.ActiveLineColor;
             disabledLineColor = controller.DisabledLineColor;
-            (activeParticleLayerColors, activeParticleLayerIndices) = PackArray(controller.ActiveParticleLayerColors);
-            (disabledParticleLayerColors, disabledParticleLayerIndices) = PackArray(controller.DisabledParticleLayerColors);
+            activeParticleLayerColors = controller.ActiveParticleLayerColors;
+            disabledParticleLayerColors = controller.DisabledParticleLayerColors;
         }
-    }
-    
-    private static (T[], int[]) PackArray<T>(T[][] toPack)
-    {
-        int[] startingIndices = new int[toPack.Length];
-        int sum = 0;
-        for (int i = 0; i < toPack.Length; i++)
-        {
-            startingIndices[i] = sum;
-            sum += toPack[i].Length;
-        }
-
-        T[] result = new T[sum];
-        int index = 0;
-        foreach (T[] array in toPack)
-        foreach (T element in array)
-        {
-            result[index] = element;
-            index++;
-        }
-
-        return (result, startingIndices);
     }
 }

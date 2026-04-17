@@ -63,13 +63,13 @@ internal class DreamDashController : Entity
     public readonly Color[][] DisabledParticleLayerColors;
 
     // ModInterop stuff
-    internal static readonly List<Type> SetupIgnoringTypes = [];
-    internal static void AddSetupIgnoringTypes(List<Type> types) => SetupIgnoringTypes.AddRange(types);
-    internal static void RemoveSetupIgnoringTypes(List<Type> types) => types.ForEach(t => SetupIgnoringTypes.Remove(t));
+    internal static readonly HashSet<Type> SetupIgnoringTypes = [];
+    internal static void AddSetupIgnoringTypes(HashSet<Type> types) => SetupIgnoringTypes.UnionWith(types);
+    internal static void RemoveSetupIgnoringTypes(HashSet<Type> types) => SetupIgnoringTypes.ExceptWith(types);
     
-    internal static readonly List<Type> ControlledTypes = [];
-    internal static void AddControlledTypes(List<Type> types) => ControlledTypes.AddRange(types);
-    internal static void RemoveControlledTypes(List<Type> types) => types.ForEach(t => ControlledTypes.Remove(t));
+    internal static readonly HashSet<Type> ControlledTypes = [];
+    internal static void AddControlledTypes(HashSet<Type> types) => ControlledTypes.UnionWith(types);
+    internal static void RemoveControlledTypes(HashSet<Type> types) => ControlledTypes.ExceptWith(types);
     
     private readonly bool roomWide;
 
@@ -539,7 +539,7 @@ internal class DreamDashController : Entity
         cursor.EmitDelegate(GetAllControllers);
         cursor.EmitStloc(allDreamDashControllers);
 
-        if (!cursor.TryGotoNextBestFit(MoveType.After,
+        if (!cursor.TryGotoNextBestFit(MoveType.Before,
             instr => instr.MatchLdloc(5),
             instr => instr.MatchLdarg(0),
             instr => instr.MatchCallvirt<EntityList>("get_Scene"),
@@ -548,7 +548,7 @@ internal class DreamDashController : Entity
         
         cursor.Emit(OpCodes.Ldloc, 5);
         cursor.Emit(OpCodes.Ldloc, allDreamDashControllers);
-        cursor.EmitDelegate(ProcessEntity);
+        cursor.EmitDelegate(ProcessEntityBeforeAwake);
 
         return;
 
@@ -557,7 +557,7 @@ internal class DreamDashController : Entity
                                        .Cast<DreamDashController>()
                                        .ToArray();
 
-        static void ProcessEntity(Entity entity, DreamDashController[] dreamDashControllers)
+        static void ProcessEntityBeforeAwake(Entity entity, DreamDashController[] dreamDashControllers)
         {
             foreach (DreamDashController controller in dreamDashControllers)
                 controller.Process(entity);
