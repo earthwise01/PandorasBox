@@ -197,6 +197,12 @@ entities.pandorasBox/flagToggleSwitch.attributes.description.flag=Which flag the
 # Dream Dash Controller
 entities.pandorasBox/dreamDashController.placements.name.controller=Dream Dash Controller
 entities.pandorasBox/dreamDashController.placements.name.controller_area=Dream Dash Area Controller
+entities.pandorasBox/dreamDashController.attributes.name.particleLayer0Colors=Particle Layer 0 Colors
+entities.pandorasBox/dreamDashController.attributes.name.particleLayer1Colors=Particle Layer 1 Colors
+entities.pandorasBox/dreamDashController.attributes.name.particleLayer2Colors=Particle Layer 2 Colors
+entities.pandorasBox/dreamDashController.attributes.name.disabledParticleLayer0Colors=Disabled Particle Layer 0 Colors
+entities.pandorasBox/dreamDashController.attributes.name.disabledParticleLayer1Colors=Disabled Particle Layer 1 Colors
+entities.pandorasBox/dreamDashController.attributes.name.disabledParticleLayer2Colors=Disabled Particle Layer 2 Colors
 entities.pandorasBox/dreamDashController.attributes.description.allowSameDirectionDash=If the player should be able to dash in the direction they are currently dashing.
 entities.pandorasBox/dreamDashController.attributes.description.allowDreamDashRedirect=If the player should be able to dash in a new direction while in space jam.
 entities.pandorasBox/dreamDashController.attributes.description.overrideDreamDashSpeed=Whether the space jam should use custom speed.
@@ -211,9 +217,12 @@ entities.pandorasBox/dreamDashController.attributes.description.activeLineColor=
 entities.pandorasBox/dreamDashController.attributes.description.disabledLineColor=Line colour for deactivated space jam. Override Colors must be enabled.
 entities.pandorasBox/dreamDashController.attributes.description.activeBackColor=Background colour for active space jam. Override Colors must be enabled.
 entities.pandorasBox/dreamDashController.attributes.description.disabledBackColor=Background colour for deactivated space jam. Override Colors must be enabled.
-entities.pandorasBox/dreamDashController.attributes.description.particleLayer0Colors=Colors for particle layer 0, multiple colours can be used with "," as separator. Override Colors must be enabled.
-entities.pandorasBox/dreamDashController.attributes.description.particleLayer1Colors=Colors for particle layer 1, multiple colours can be used with "," as separator. Override Colors must be enabled.
-entities.pandorasBox/dreamDashController.attributes.description.particleLayer2Colors=Colors for particle layer 2, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.particleLayer0Colors=Colours for particle layer 0, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.particleLayer1Colors=Colours for particle layer 1, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.particleLayer2Colors=Colours for particle layer 2, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.disabledParticleLayer0Colors=Colours for particle layer 0 if the space jam is disabled, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.disabledParticleLayer1Colors=Colours for particle layer 1 if the space jam is disabled, multiple colours can be used with "," as separator. Override Colors must be enabled.
+entities.pandorasBox/dreamDashController.attributes.description.disabledParticleLayer2Colors=Colours for particle layer 2 if the space jam is disabled, multiple colours can be used with "," as separator. Override Colors must be enabled.
 
 # Entity Activator
 entities.pandorasBox/entityActivator.placements.name.entity_activator=Entity Activator

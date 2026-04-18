@@ -70,6 +70,18 @@ end
 dreamDashController.nodeLineRenderType = "fan"
 dreamDashController.nodeVisibility = "never"
 
+dreamDashController.fieldOrder = {
+    "x", "y",
+    "activeBackColor", "disabledBackColor",
+    "activeLineColor", "disabledLineColor",
+    "particleLayer0Colors", "disabledParticleLayer0Colors",
+    "particleLayer1Colors", "disabledParticleLayer1Colors",
+    "particleLayer2Colors", "disabledParticleLayer2Colors",
+    "dreamDashSpeed", "sameDirectionSpeedMultiplier",
+    "overrideColors", "overrideDreamDashSpeed", "allowDreamDashRedirect", "allowSameDirectionDash",
+    "neverSlowDown", "useEntrySpeedAngle", "bounceOnCollision", "stickOnCollision"
+}
+
 dreamDashController.fieldInformation = {
     activeBackColor = {
         fieldType = "color",
@@ -86,10 +98,66 @@ dreamDashController.fieldInformation = {
     disabledLineColor = {
         fieldType = "color",
         allowXNAColors = true,
+    },
+    particleLayer0Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
+    },
+    particleLayer1Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
+    },
+    particleLayer2Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
+    },
+    disabledParticleLayer0Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
+    },
+    disabledParticleLayer1Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
+    },
+    disabledParticleLayer2Colors = {
+        fieldType = "list",
+        elementSeperator = ",",
+        elementDefault = "ffffff",
+        elementOptions = {
+            fieldType = "color",
+            allowXNAColors = true,
+        }
     }
 }
 
 local dreamDashControllerTexture = "objects/pandorasBox/controllerIcons/dreamDashController"
+local dreamDashControllerAreaCornerTexture = "objects/pandorasBox/controllerIcons/dreamDashAreaControllerCorner"
+local dreamDashControllerAreaCornerColor = { 0.7, 1, 1, 0.7 }
 local dreamDashControllerAreaFill = { 0, 1, 1, 0.2 }
 local dreamDashControllerAreaBorder = { 0, 1, 1, 0.5 }
 
@@ -101,15 +169,27 @@ function dreamDashController.sprite(room, entity)
     table.insert(sprites, drawableSprite.fromTexture(dreamDashControllerTexture, entity))
 
     if area then
-        local topLeftX, topLeftY = math.min(nodes[1].x, nodes[2].x), math.min(nodes[1].y, nodes[2].y)
-        local bottomRightX, bottomRightY = math.max(nodes[1].x, nodes[2].x), math.max(nodes[1].y, nodes[2].y)
+        local ax, ay = nodes[1].x or 0, nodes[1].y or 0
+        local bx, by = nodes[2].x or 0, nodes[2].y or 0
+
+        local topLeftX, topLeftY = math.min(ax, bx), math.min(ay, by)
+        local bottomRightX, bottomRightY = math.max(ax, bx), math.max(ay, by)
         
         local areaRectangle = drawableRectangle.fromRectangle("bordered",
                 topLeftX, topLeftY, bottomRightX - topLeftX, bottomRightY - topLeftY,
                 dreamDashControllerAreaFill, dreamDashControllerAreaBorder)
         table.insert(sprites, areaRectangle)
+
+        local cornerScaleX, cornerScaleY = (bx - ax >= 0) and 1 or -1, (by - ay >= 0) and 1 or -1
+
+        local cornerSpriteA = drawableSprite.fromTexture(dreamDashControllerAreaCornerTexture,
+                { x = ax, y = ay, scaleX = cornerScaleX, scaleY = cornerScaleY, color = dreamDashControllerAreaCornerColor })
+        local cornerSpriteB = drawableSprite.fromTexture(dreamDashControllerAreaCornerTexture,
+                { x = bx, y = by, scaleX = -cornerScaleX, scaleY = -cornerScaleY, color = dreamDashControllerAreaCornerColor })
+        table.insert(sprites, cornerSpriteA)
+        table.insert(sprites, cornerSpriteB)
     end
-    
+
     return sprites
 end
 
@@ -126,7 +206,7 @@ function dreamDashController.selection(room, entity)
     local nodeRectangles = {}
     if area then
         for _, node in ipairs(nodes) do
-            table.insert(nodeRectangles, utils.rectangle(node.x - 2, node.y - 2, 4, 4))
+            table.insert(nodeRectangles, utils.rectangle(node.x - 3, node.y - 3, 6, 6))
         end
     end
     
